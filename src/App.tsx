@@ -4,7 +4,7 @@ import WelcomePage from "./pages/WelcomePage";
 import Prizes from "./pages/Prizes";
 // import WebApp from "@twa-dev/sdk";
 import './index.css'
-import Modes from "./pages/modes";
+import Modes from "./pages/Modes";
 import Login from "./pages/Login";
 
 function App() {
