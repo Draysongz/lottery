@@ -1,20 +1,31 @@
-import { Box, Flex, Text, Image, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Image, Card, CardBody, Button } from "@chakra-ui/react";
 import "../index.css";
 import Header from "../components/Header";
 import NavigationBar from "../components/NavigationBar";
 const gameplayArray = [
   {
     location: "New Mexico",
-    prize: "25k",
+    prize: "8",
     userIcon: "/svgIcons/people.svg",
-    playersNumber:"9845",
+    playersNumber:"0",
     ticketIcon: "/svgIcons/ticket.svg",
-    ticketRequired: "10",
+    ticketRequired: "8",
     chips: "/svgIcons/chip.svg",
     bidAmount: "25,000",
-    starIcon: "svgIcons/staronstand.svg",
-    level:"1/5",
-    cta: "Join the game"
+    cta: "Join the game",
+    requiredPlayers: 10
+  },
+  {
+    location: "Nevada",
+    prize: "16",
+    userIcon: "/svgIcons/people.svg",
+    playersNumber:0,
+    ticketIcon: "/svgIcons/ticket.svg",
+    ticketRequired: "1",
+    chips: "/svgIcons/chip.svg",
+    bidAmount: "25,000",
+    cta: "Join the game",
+    requiredPlayers: 20
   },
   {
     location: "Nevada",
@@ -25,21 +36,6 @@ const gameplayArray = [
     ticketRequired: "10",
     chips: "/svgIcons/chip.svg",
     bidAmount: "25,000",
-    starIcon: "svgIcons/staronstand.svg",
-    level:"1/5",
-    cta: "Join the game"
-  },
-  {
-    location: "Nevada",
-    prize: "10k",
-    userIcon: "/svgIcons/people.svg",
-    playersNumber:"1246",
-    ticketIcon: "/svgIcons/ticket.svg",
-    ticketRequired: "10",
-    chips: "/svgIcons/chip.svg",
-    bidAmount: "25,000",
-    starIcon: "svgIcons/staronstand.svg",
-    level:"1/5",
     cta: "Join the game"
   },
 ];
@@ -68,16 +64,14 @@ export default function Gameplay() {
       >
         {gameplayArray.map((gameplay) => {
           return (
+            <Card bgColor={"#e6c197"} w={"90%"} boxShadow={"0px 5px 8px rgba(0, 0,0, 0.6)"}  borderRadius={"40px"} >
+              <CardBody scale={10}>  
             <Flex
-              width={"90%"}
+              width={"100%"}
               height={"270px"}
-              borderRadius={"50px"}
-              bgColor={"#e7c198"}
               flexDirection={"column"}
               alignItems={"center"}
               gap={2}
-              boxShadow="0px 4px 6px rgba(0, 0, 0, 0.6)"
-            //   justifyContent={"space-between"}
             >
               <Box
                 bgColor={"#eacda9"}
@@ -157,15 +151,14 @@ export default function Gameplay() {
                   </Box>
                 </Box>
               </Box>
-              <Flex bg={"#eecda8"} w={"85%"} borderRadius={'15px'} height={'70px'} mt={-16} alignItems={'center'} border={'1px solid rgba(82,32,11, 0.3)'}>
+              <Flex bg={"#eecda8"} w={"85%"} borderRadius={'15px'} height={'70px'} mt={-16} alignItems={'center'} border={'1px solid rgba(82,32,11, 0.3)'} justifyContent={'space-between'}>
                 <Flex
                 borderRight={'1px solid #52200B'}
-                width={'25%'}
+                width={'30%'}
                 justifyContent={'center'}
                 height={'70%'}
                 alignItems={'center'}
                 flexDirection={'column'}
-
                 >
                   <Image width={8} src={gameplay.userIcon} />
                   <Text color={"#52200B"} fontWeight={600}>
@@ -174,22 +167,21 @@ export default function Gameplay() {
                 </Flex>
                 <Flex
                 borderRight={'1px solid #52200B'}
-                width={'25%'}
+                width={'40%'}
                 justifyContent={'center'}
                 height={'70%'}
                 alignItems={'center'}
-                flexDirection={'column'}
-
+                flexDirection={'column'} 
                 >
                   <Image width={8} src={gameplay.ticketIcon} />
                   <Text color={"#52200B"} fontWeight={600} display={'flex'} alignItems={'center'} gap={1}>
                     {gameplay.ticketRequired}
-                    <Text fontWeight={100} fontSize={'10px'}>XFI</Text>
+                    <Text fontWeight={100} fontSize={'10px'}>USDT</Text>
                   </Text>
                 </Flex>
                 <Flex
-                borderRight={'1px solid #52200B'}
-                width={'25%'}
+                
+                width={'30%'}
                 justifyContent={'center'}
                 height={'70%'}
                 alignItems={'center'}
@@ -199,18 +191,6 @@ export default function Gameplay() {
                   <Image width={8} src={gameplay.chips} />
                   <Text color={"#52200B"} fontWeight={600}>
                     {gameplay.bidAmount}
-                  </Text>
-                </Flex>
-                <Flex
-                width={'25%'}
-                justifyContent={'center'}
-                height={'70%'}
-                alignItems={'center'}
-                flexDirection={'column'}
-                >
-                  <Image width={8} src={gameplay.starIcon} />
-                  <Text color={"#52200B"} fontWeight={600}>
-                    {gameplay.level}
                   </Text>
                 </Flex>
               </Flex>
@@ -225,6 +205,8 @@ export default function Gameplay() {
                 {gameplay.cta}
               </Button>
             </Flex>
+              </CardBody>
+            </Card>
           );
         })}
       </Box>
