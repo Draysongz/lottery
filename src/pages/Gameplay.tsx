@@ -1,6 +1,4 @@
-import { Box, Flex, Text, Image, Button, Icon } from "@chakra-ui/react";
-// import { FaAngleRight } from "react-icons/fa";
-// import { Link } from "react-router-dom";
+import { Box, Flex, Text, Image, Button } from "@chakra-ui/react";
 import "../index.css";
 import Header from "../components/Header";
 import NavigationBar from "../components/NavigationBar";
@@ -231,9 +229,9 @@ export default function Gameplay() {
         })}
       </Box>
       <Box
-        className="fixed bottom-0 left-0 w-full h-32 pointer-events-none"
+        className="fixed bottom-0 left-0 w-full h-16 pointer-events-none"
         style={{
-          background: 'rgba(0, 0, 0, 0.5)',
+          background: 'transparent',
           backdropFilter: 'blur(10px)',
           zIndex: 1,
         }}

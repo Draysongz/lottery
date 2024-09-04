@@ -3,6 +3,7 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import "../index.css";
 import Header from "../components/Header";
 import DailyUsers from "../components/DailyUsers";
+import NavigationBar from "../components/NavigationBar";
 export default function TopUsers() {
   return (
     <Box
@@ -34,8 +35,8 @@ export default function TopUsers() {
                 Top users
             </Text>
         </Box>
-        <Flex justify={"space-between"} align={"center"}>
-          <Tabs variant={"soft-rounded"} display={"flex"} flexDirection={'column'} gap={4}>
+        <Flex justify={"space-between"} align={"center"} width={'90%'}>
+          <Tabs variant={"soft-rounded"} display={"flex"} flexDirection={'column'} gap={4} width={'100%'}>
             <TabList bgColor={'#deb17e'} borderRadius={'25px'} height={'50px'} boxShadow="0px 2px 0px 1px rgba(223,223,223, 0.6)" p={'5px'}>
               <Tab
                 color={"#80462f"}
@@ -83,6 +84,15 @@ export default function TopUsers() {
           </Tabs>
         </Flex>
       </Box>
+      <Box
+        className="fixed bottom-0 left-0 w-full h-16 pointer-events-none"
+        style={{
+          background: 'transparent',
+          backdropFilter: 'blur(10px)',
+          zIndex: 1,
+        }}
+      ></Box>
+      <NavigationBar />
     </Box>
   );
 }
