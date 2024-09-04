@@ -1,11 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Box, Flex } from "@chakra-ui/react";
-import WelcomePage from "./pages/WelcomePage";
-import Prizes from "./pages/Prizes";
+import Gameplay from "./pages/Gameplay";
 // import WebApp from "@twa-dev/sdk";
 import './index.css'
-import Modes from "./pages/Modes";
-import Login from "./pages/Login";
+import TopUsers from "./pages/TopUsers";
+import Friends from "./pages/Friends"
 
 function App() {
   // const BackButton = WebApp.BackButton;
@@ -14,13 +13,12 @@ function App() {
   // BackButton.onClick(() => window.history.back());
   return (
     <Flex align={"center"} justify={"center"} minH={"100vh"}>
-      <Box w={""}>
+      <Box>
         <BrowserRouter>
           <Routes>
-            <Route index element={<WelcomePage />} />
-            <Route path="prizes" element={<Prizes />} />
-            <Route path="modes" element={<Modes />} />
-            <Route path="login" element={<Login />} />
+            <Route index element={<Gameplay />} />
+            <Route path="leaderboard" element={<TopUsers />} />
+            <Route path="friends" element={<Friends />} />
 
           </Routes>
         </BrowserRouter>
