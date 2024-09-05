@@ -1,9 +1,12 @@
 import {
   addDoc,
+  arrayRemove,
   collection,
+  doc,
   getDocs,
   getFirestore,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore"
 import { app } from "../firebase/firebase"
@@ -13,18 +16,19 @@ const db = getFirestore(app)
 
 const section = collection(db, "Games")
 
-type Game = {
-    gameId: string;
-    participants: User[];
-    totalSlots: number;
-    prizePool: number;
-    status: 'pending' | 'active' | 'completed'; // Changed to string literals for better clarity
-    winner: User | null; // The winner will be a participant, or null if no winner yet
-    ticketPrice: number;
-    slotsAvailable: number; // Optional: Tracks remaining slots
-    createdAt: Date; // Optional: Track when the game was created
-    drawnAt: Date | null; // Optional: Track when the game was drawn
+export type Game = {
+  gameId: string;
+  participants: { userId: number; slotsPurchased: number[] }[];
+  totalSlots: number;
+  prizePool: number;
+  status: 'pending' | 'active' | 'completed';
+  winner: number | null; // User ID of the winner
+  ticketPrice: number;
+  availableSlots: number[]; // Array of available slot numbers
+  createdAt: Date;
+  drawnAt: Date | null;
 };
+
 
 async function createCards(data: Game) {
   const exist = await checkCardExist(data.gameId);
@@ -69,4 +73,26 @@ async function getCard(userId: number, documentId: string) {
 }
 
 
-export { createCards, getCardsByCategory, getCard }
+async function updateGameSlots(gameId: number, purchasedSlots: number[]) {
+  try {
+    const gameDocRef = doc(db, "games", gameId.toString());
+    await updateDoc(gameDocRef, {
+      availableSlots: arrayRemove(...purchasedSlots) // Remove purchased slots from available slots
+    });
+  } catch (err) {
+    console.error("Error updating game slots:", err);
+  }
+}
+async function resetGame(gameId: string, data: Game) {
+  const gameDocRef = doc(db, "Games", gameId);
+  await updateDoc(gameDocRef, {
+    participants: [],
+    availableSlots: Array.from({ length: data.totalSlots }, (_, i) => i + 1),
+    status: 'pending',
+    winner: null,
+    drawnAt: null,
+  });
+}
+
+
+export { createCards, getCardsByCategory, getCard, updateGameSlots, resetGame }

@@ -31,7 +31,7 @@ export type User = {
 
 export type Game = {
   gameId: number;
-  slotsPurchased: number;
+  slotsPurchased: number[];
   winningStatus: boolean;
   prizeAmount: number;
   status: 'in-progress' | 'completed'; // Status of the game
@@ -132,10 +132,55 @@ async function updateReferralData(userId: number, referralId: number) {
   }
 }
 
+async function updateUserGameData(userId: number, gameId: string, slotsPurchased: number[]) {
+  try {
+    const userDocRef = doc(db, "users", userId.toString());
+    await updateDoc(userDocRef, {
+      currentGames: arrayUnion({
+        gameId,
+        slotsPurchased,
+        winningStatus: false,
+        prizeAmount: 0,
+        status: 'in-progress'
+      }),
+      gamesPlayed: arrayUnion({
+        gameId,
+        slotsPurchased,
+        winningStatus: false,
+        prizeAmount: 0,
+        status: 'in-progress'
+      })
+    });
+  } catch (err) {
+    console.error("Error updating user game data:", err);
+  }
+}
+
+async function updateUserSlotData(userId: number, gameId: string, winningStatus: boolean, prizeAmount: number) {
+  try {
+    const userDocRef = doc(db, "users", userId.toString());
+    await updateDoc(userDocRef, {
+      currentGames: arrayUnion({
+        gameId,
+        slotsPurchased: [], // Remove specific slot numbers or handle accordingly
+        winningStatus,
+        prizeAmount,
+        status: 'completed'
+      }),
+      gamesWon: winningStatus ? increment(1) : increment(0),
+      gamesLost: !winningStatus ? increment(1) : increment(0),
+    });
+  } catch (err) {
+    console.error("Error updating user slot data:", err);
+  }
+}
+
 export {
   getUserData,
   updateUserData,
   getQuerySnapshot,
   setupRealtimeListener,
   getUserLevelData,
+  updateUserGameData,
+  updateUserSlotData,
 }
