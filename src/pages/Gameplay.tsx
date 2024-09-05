@@ -7,7 +7,6 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  Card, CardBody
 } from '@chakra-ui/react';
 import "../index.css";
 import { FaSackDollar } from "react-icons/fa6";
@@ -16,27 +15,14 @@ import NavigationBar from "../components/NavigationBar";
 const gameplayArray = [
   {
     location: "New Mexico",
-    prize: "8",
+    prize: "25k",
     userIcon: "/svgIcons/people.svg",
-    playersNumber:"0",
+    playersNumber:"9845",
     ticketIcon: "/svgIcons/ticket.svg",
-    ticketRequired: "8",
+    ticketRequired: "10",
     chips: "/svgIcons/chip.svg",
     bidAmount: "25,000",
-    cta: "Join the game",
-    requiredPlayers: 10
-  },
-  {
-    location: "Nevada",
-    prize: "16",
-    userIcon: "/svgIcons/people.svg",
-    playersNumber:0,
-    ticketIcon: "/svgIcons/ticket.svg",
-    ticketRequired: "1",
-    chips: "/svgIcons/chip.svg",
-    bidAmount: "25,000",
-    cta: "Join the game",
-    requiredPlayers: 20
+    cta: "Join the game"
   },
   {
     location: "Nevada",
@@ -79,7 +65,7 @@ export default function Gameplay() {
       overflow={'scroll'}
       alignItems={"center"}
       paddingTop={"15%"}
-      paddingBottom={"18%"}
+      paddingBottom={"15%"}
     >
       <Flex flexDirection={'column'} gap={6}>
         <Flex flexDirection={'column'} alignItems={'center'} gap={4}>
@@ -102,12 +88,9 @@ export default function Gameplay() {
         gap={16}
         alignItems={"center"}
       >
-        {gameplayArray.map((gameplay, index) => {
+        {gameplayArray.map((gameplay) => {
           return (
-            <Card bgColor={"#e6c197"} w={"90%"} boxShadow={"0px 5px 8px rgba(0, 0,0, 0.6)"}  borderRadius={"40px"} >
-              <CardBody scale={10}>  
             <Flex
-            key={index}
               width={"80%"}
               height={"270px"}
               borderRadius={"50px"}
@@ -202,6 +185,7 @@ export default function Gameplay() {
                 height={'70%'}
                 alignItems={'center'}
                 flexDirection={'column'}
+
                 >
                   <Image width={8} src={gameplay.userIcon} />
                   <Text color={"white"} fontWeight={600}>
@@ -214,12 +198,13 @@ export default function Gameplay() {
                 justifyContent={'center'}
                 height={'70%'}
                 alignItems={'center'}
-                flexDirection={'column'} 
+                flexDirection={'column'}
+
                 >
                   <Image width={8} src={gameplay.ticketIcon} />
                   <Text color={"white"} fontWeight={600} display={'flex'} alignItems={'center'} gap={1}>
                     {gameplay.ticketRequired}
-                    <Text fontWeight={100} fontSize={'10px'}>USDT</Text>
+                    <Text fontWeight={100} fontSize={'10px'}>XFI</Text>
                   </Text>
                 </Flex>
                 <Flex
@@ -247,8 +232,6 @@ export default function Gameplay() {
                 {gameplay.cta}
               </Button>
             </Flex>
-              </CardBody>
-            </Card>
           );
         })}
       </Box>
