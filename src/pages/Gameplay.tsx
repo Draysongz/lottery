@@ -1,6 +1,16 @@
-import { Box, Flex, Text, Image, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Image, Button, Icon, useDisclosure } from "@chakra-ui/react";
+import {
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  // DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+} from '@chakra-ui/react';
 import "../index.css";
-import Header from "../components/Header";
+import { FaSackDollar } from "react-icons/fa6";
+// import Header from "../components/Header";
 import NavigationBar from "../components/NavigationBar";
 const gameplayArray = [
   {
@@ -12,8 +22,6 @@ const gameplayArray = [
     ticketRequired: "10",
     chips: "/svgIcons/chip.svg",
     bidAmount: "25,000",
-    starIcon: "svgIcons/staronstand.svg",
-    level:"1/5",
     cta: "Join the game"
   },
   {
@@ -25,8 +33,6 @@ const gameplayArray = [
     ticketRequired: "10",
     chips: "/svgIcons/chip.svg",
     bidAmount: "25,000",
-    starIcon: "svgIcons/staronstand.svg",
-    level:"1/5",
     cta: "Join the game"
   },
   {
@@ -38,49 +44,66 @@ const gameplayArray = [
     ticketRequired: "10",
     chips: "/svgIcons/chip.svg",
     bidAmount: "25,000",
-    starIcon: "svgIcons/staronstand.svg",
-    level:"1/5",
     cta: "Join the game"
   },
 ];
 
+
+
 export default function Gameplay() {
+
+  const {onClose, onOpen, isOpen} = useDisclosure()
   return (
     <Box
       display={"flex"}
-      bgColor={"#cb9775"}
       width={"100vw"}
-      minH={'100vh'}
+      height={'100vh'}
       flexDirection={"column"}
       color={"white"}
-    //   justifyContent={"space-around"}
+      justifyContent={"space-around"}
       gap={14}
+      overflow={'scroll'}
       alignItems={"center"}
-      paddingY={'20px'}
+      paddingTop={"15%"}
+      paddingBottom={"18%"}
     >
-    <Header />
+      <Flex flexDirection={'column'} gap={6}>
+        <Flex flexDirection={'column'} alignItems={'center'} gap={4}>
+          <Image w={24} boxShadow="0px 0px 4px 6px rgba(223, 223,223, 0.6)" borderRadius={'50px'} src="/svgIcons/user.svg"/>
+          <Text fontSize={'24px'} fontStyle={'italic'} fontWeight={600}>
+            Habibi
+          </Text>
+        </Flex>
+        <Flex alignItems={'center'} gap={4}>
+          <Icon as={FaSackDollar} fontSize={'40px'}/>
+          <Text fontSize={'40px'} fontStyle={'italic'} fontWeight={800}>
+            250,000
+          </Text>
+        </Flex>
+      </Flex>
       <Box
         width={"100%"}
         display={"flex"}
         flexDirection={"column"}
-        gap={10}
+        gap={16}
         alignItems={"center"}
       >
-        {gameplayArray.map((gameplay) => {
+        {gameplayArray.map((gameplay, index) => {
           return (
             <Flex
-              width={"90%"}
+            key={index}
+              width={"80%"}
               height={"270px"}
               borderRadius={"50px"}
-              bgColor={"#e7c198"}
+              bgColor={""}
               flexDirection={"column"}
               alignItems={"center"}
-              gap={2}
-              boxShadow="0px 4px 6px rgba(0, 0, 0, 0.6)"
+              gap={1}
+              boxShadow="0px 0px 4px 6px rgba(223, 223,223, 0.6)"
             //   justifyContent={"space-between"}
             >
               <Box
-                bgColor={"#eacda9"}
+                bgColor={"black"}
                 width={"80%"}
                 height={"60px"}
                 borderRadius={"50px"}
@@ -88,10 +111,10 @@ export default function Gameplay() {
                 alignItems={"center"}
                 justifyContent={"center"}
                 display={"flex"}
-                zIndex={1}
-                boxShadow="0px 4px 6px rgba(0, 0, 0, 0.6)"
+                zIndex={0}
+                boxShadow="0px 0px 4px 6px rgba(223, 223,223, 0.6)"
               >
-                <Text fontSize={"22px"} fontWeight={"600"} color={"#55200B"}>
+                <Text fontSize={"22px"} fontWeight={"600"} color={"white"}>
                   {gameplay.location}
                 </Text>
               </Box>
@@ -102,12 +125,11 @@ export default function Gameplay() {
                 display={"flex"}
                 mt={"-12"}
                 justifyContent={"center"}
-                zIndex={0}
               >
                 <Box
                   width={"90%"}
                   height={"120%"}
-                  bgColor={"#f0b485"}
+                  bgColor={""}
                   borderRadius={"50%"}
                   display={"flex"}
                   justifyContent={"center"}
@@ -123,29 +145,28 @@ export default function Gameplay() {
                     display={"flex"}
                     justifyContent={"center"}
                     alignItems={"center"}
-                    border={"2px solid #fa824d"}
+                    border={"2px solid limegreen"}
                   >
                     <Box
                       bgColor={"transparent"}
                       width={"95%"}
                       height={"95%"}
                       borderRadius={"50%"}
-                      border={"1px solid #eacda9"}
+                      border={"1px solid white"}
                       display={"flex"}
                       alignItems={"center"}
                       justifyContent={"center"}
                     >
                       <Text
-                        fontSize={"50px"}
+                        fontSize={"45px"}
                         mt={28}
                         color={"white"}
-                        fontWeight={"800"}
                         display={"flex"}
                         flexDirection={"column"}
                         alignItems={"center"}
                         sx={{
-                            WebkitTextStroke: '2px #EB2928', // Custom stroke
-                            textStroke: '2px #EB2928',
+                            WebkitTextStroke: '2px limegreen', // Custom stroke
+                            textStroke: '2px limegreen',
                           }}
                       >
                         {gameplay.prize}
@@ -157,10 +178,10 @@ export default function Gameplay() {
                   </Box>
                 </Box>
               </Box>
-              <Flex bg={"#eecda8"} w={"85%"} borderRadius={'15px'} height={'70px'} mt={-16} alignItems={'center'} border={'1px solid rgba(82,32,11, 0.3)'}>
+              <Flex bg={""} w={"85%"} borderRadius={'15px'} height={'70px'} mt={-16} mb={3} alignItems={'center'} boxShadow="0px 0px 4px 6px rgba(223, 223,223, 0.6)">
                 <Flex
-                borderRight={'1px solid #52200B'}
-                width={'25%'}
+                borderRight={'1px solid white'}
+                width={'33.33333333333333%'}
                 justifyContent={'center'}
                 height={'70%'}
                 alignItems={'center'}
@@ -168,13 +189,13 @@ export default function Gameplay() {
 
                 >
                   <Image width={8} src={gameplay.userIcon} />
-                  <Text color={"#52200B"} fontWeight={600}>
+                  <Text color={"white"} fontWeight={600}>
                     {gameplay.playersNumber}
                   </Text>
                 </Flex>
                 <Flex
-                borderRight={'1px solid #52200B'}
-                width={'25%'}
+                borderRight={'1px solid white'}
+                width={'33.33333333333333%'}
                 justifyContent={'center'}
                 height={'70%'}
                 alignItems={'center'}
@@ -182,14 +203,13 @@ export default function Gameplay() {
 
                 >
                   <Image width={8} src={gameplay.ticketIcon} />
-                  <Text color={"#52200B"} fontWeight={600} display={'flex'} alignItems={'center'} gap={1}>
+                  <Text color={"white"} fontWeight={600} display={'flex'} alignItems={'center'} gap={1}>
                     {gameplay.ticketRequired}
                     <Text fontWeight={100} fontSize={'10px'}>XFI</Text>
                   </Text>
                 </Flex>
                 <Flex
-                borderRight={'1px solid #52200B'}
-                width={'25%'}
+                width={'33.33333333333333%'}
                 justifyContent={'center'}
                 height={'70%'}
                 alignItems={'center'}
@@ -197,25 +217,13 @@ export default function Gameplay() {
 
                 >
                   <Image width={8} src={gameplay.chips} />
-                  <Text color={"#52200B"} fontWeight={600}>
+                  <Text color={"white"} fontWeight={600}>
                     {gameplay.bidAmount}
                   </Text>
                 </Flex>
-                <Flex
-                width={'25%'}
-                justifyContent={'center'}
-                height={'70%'}
-                alignItems={'center'}
-                flexDirection={'column'}
-                >
-                  <Image width={8} src={gameplay.starIcon} />
-                  <Text color={"#52200B"} fontWeight={600}>
-                    {gameplay.level}
-                  </Text>
-                </Flex>
               </Flex>
-              <Button
-              bg={'linear-gradient(180deg, #F9BB2F 0%, #EB2928 100%)'}
+              <Button onClick={onOpen}
+              bg={'linear-gradient(180deg, limegreen 0%, grey 100%)'}
               color={'white'}
               width={'60%'}
               height={'40px'}
@@ -228,15 +236,54 @@ export default function Gameplay() {
           );
         })}
       </Box>
-      <Box
-        className="fixed bottom-0 left-0 w-full h-16 pointer-events-none"
-        style={{
-          background: 'transparent',
-          backdropFilter: 'blur(10px)',
-          zIndex: 1,
-        }}
-      ></Box>
       <NavigationBar />
+      <Drawer 
+        isOpen={isOpen}
+        placement='bottom'
+        onClose={onClose}
+
+
+       
+      >
+        <DrawerOverlay />
+        <DrawerContent
+          
+            // bgImage= {`url(${bg})`}
+            // bgSize= 'cover'
+            // bgPosition= 'center'
+            // bgBlendMode="overlay"
+            // borderTopRadius="25px"
+            bg={'white'}
+            zIndex={4}
+        >
+
+          <DrawerCloseButton color="white" />
+
+          <DrawerBody>
+            {/* <Input placeholder='Type here...' /> */}
+            <Box className=' flex flex-col items-center justify-center py-3 text-white gap-3'>
+            {/* <img src={coin} alt="" className='w-[100px]'/> */}
+            <Flex className='flex-col text-center gap-3 w-[100%]'>
+            <Text className=' text-[1.5em] font-semibold'>
+                AirDrop points
+            </Text>
+            <Flex className='gap-2 items-center justify-center'>
+                {/* <Icon as={SlBadge} boxSize={10} color={'green   '}/> */}
+                <Text className='text-[25px]'>TBA</Text>
+            </Flex>
+            <Text >All the activities that users do playing SET convert into AirDrop points. Every single thing is important: the way you play, your social activity, generated energies and sources. All your points will be taken into account, and the AirDrop will be distributed accordingly to each player</Text>
+            </Flex>
+            </Box>
+
+          </DrawerBody>
+
+          <DrawerFooter>
+          <Button className='w-[100%] text-black font-bold' onClick={onClose} height="70px" fontSize="25px">
+                Close
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </Box>
   );
 }
