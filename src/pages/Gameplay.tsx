@@ -25,8 +25,16 @@ import {
   DrawerContent,
 } from "@chakra-ui/react";
 import { FaSackDollar } from "react-icons/fa6";
-import { FaCheck } from "react-icons/fa";
 import NavigationBar from "../components/NavigationBar";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog"
+
 
 // Define the type for each gameplay item
 interface GameplayItem {
@@ -82,7 +90,8 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
   console.log(userData)
 
   const { onClose, onOpen, isOpen } = useDisclosure();
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  
   const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
 
   // Add state to hold the selected prize
@@ -120,11 +129,11 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
 
   const dialpadNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
   return (
-    <Box
-      display={"flex"}
+    <Flex
+      
       width={"100vw"}
       height={"100vh"}
-      flexDirection={"column"}
+      direction={"column"}
       color={"white"}
       justifyContent={"space-around"}
       gap={14}
@@ -133,8 +142,8 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
       paddingTop={"9%"}
       paddingBottom={"15%"}
     >
-      <Flex flexDirection={"column"} gap={6}>
-        <Flex flexDirection={"column"} alignItems={"center"} gap={4}>
+      <Flex direction={"column"} gap={6}>
+        <Flex direction={"column"} alignItems={"center"} gap={4}>
           <Image
             w={24}
             boxShadow="0px 0px 4px 6px rgba(223, 223, 223, 0.6)"
@@ -153,10 +162,9 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
         </Flex>
       </Flex>
 
-      <Box
+      <Flex
         width={"100%"}
-        display={"flex"}
-        flexDirection={"column"}
+        direction={"column"}
         gap={16}
         alignItems={"center"}
       >
@@ -173,7 +181,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
               gap={1}
               boxShadow="0px 0px 4px 6px rgba(223, 223, 223, 0.6)"
             >
-              <Box
+              <Flex
                 bgColor={"black"}
                 width={"80%"}
                 height={"60px"}
@@ -181,19 +189,17 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                 mt={-6}
                 alignItems={"center"}
                 justifyContent={"center"}
-                display={"flex"}
                 zIndex={0}
                 boxShadow="0px 0px 4px 6px rgba(223, 223, 223, 0.6)"
               >
                 <Text fontSize={"22px"} fontWeight={"600"} color={"white"}>
                   {gameplay.location}
                 </Text>
-              </Box>
-              <Box
+              </Flex>
+              <Flex
                 overflowY={"hidden"}
                 width={"80%"}
                 height={"200px"}
-                display={"flex"}
                 mt={"-12"}
                 justifyContent={"center"}
               >
@@ -248,7 +254,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                     </Box>
                   </Box>
                 </Box>
-              </Box>
+              </Flex>
               <Flex
                 bg={""}
                 w={"85%"}
@@ -321,7 +327,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
             </Flex>
           );
         })}
-      </Box>
+      </Flex>
       <NavigationBar userData={userData} />
       <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
         <DrawerOverlay />
@@ -331,9 +337,9 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
           borderTop={"2px solid limegreen"}
         >
           <DrawerBody>
-            <Box className=" flex flex-col items-center justify-center py-10 text-white gap-3">
-              <Flex className="flex-col text-center gap-3 w-[100%] items-center">
-                <Text className="text-[1.5em] font-semibold flex gap-2 items-center text-center">
+            <div className=" flex flex-col items-center justify-center py-10 text-white gap-3">
+              <div className="flex flex-col text-center gap-3 w-[100%] items-center">
+                <p className="text-[1.5em] font-semibold flex gap-2 items-center text-center">
                   Pool Prize:
                   <Text
                     fontWeight={100}
@@ -345,8 +351,8 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                   >
                     {selectedPrize}
                   </Text>
-                </Text>
-                <Flex className="input flex-wrap justify-center gap-2 mt-4 w-['80%]">
+                </p>
+                <div className="input flex flex-wrap justify-center gap-2 mt-4 w-['80%]">
                   {dialpadNumbers.map((number) => (
                     <Button
                       key={number}
@@ -366,36 +372,10 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                       {number}
                     </Button>
                   ))}
-                </Flex>
-              </Flex>
-              <HStack
-                color={"white"}
-                w={"90%"}
-                bg={"green"}
-                rounded={"full"}
-                p={10}
-                // onClick={() => setModalIsOpen(true)}
-                height="70px"
-                justifyContent={"space-between"}
-                display={selectedNumbers.length > 0 ? "flex" : "none"}
-              >
-                <Text fontSize="25px"> Buy slots </Text>
-                {selectedNumbers.length > 0 &&
-                  selectedNumbers.map((number, index) => {
-                    console.log("mapping the array");
-                    return (
-                      <Text key={index} fontSize={"25px"} color={"white"}>
-                        {" "}
-                        {number},
-                      </Text>
-                    );
-                  })}
-                <Icon 
-                as={FaCheck}
-                onClick={() => setModalIsOpen(true)}
-                cursor="pointer" />
-              </HStack>
-            </Box>
+                </div>
+              </div>
+               <ModalComponent  selectedNumbers={selectedNumbers}/>
+            </div>
           </DrawerBody>
 
           <DrawerFooter>
@@ -410,34 +390,57 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
+
       {/* Modal Section */}
-      {/* <Modal isOpen={modalIsOpen} onClose={() => setModalIsOpen(false)} size={'sm'} isCentered>
-        <ModalOverlay />
-        <ModalContent 
-        bgColor={'red'}
-        height={'50vh'}
-        display={'flex'}
-        justifyContent={'center'}
-        alignItems={'center'}
-        borderRadius={'25px'}>
-          <ModalHeader>Selected Numbers</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody flexDirection="column" alignItems="center" gap={4}>
-            <Text>Your selected numbers: {selectedNumbers.join(", ")}</Text>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="blue"
-              mr={3}
-              onClick={() => setModalIsOpen(false)}
-            >
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal> */}
-    </Box>
+     
+      
+    </Flex>
   );
 };
 
+
+
+function ModalComponent({selectedNumbers}: {selectedNumbers: number[]}){
+  return(
+    <>
+     <Dialog>
+  <DialogTrigger>
+      <HStack
+                color={"white"}
+                w={"90%"}
+                bg={"green"}
+                rounded={"full"}
+                p={10}
+                height="70px"
+                justifyContent={"space-between"}
+                display={selectedNumbers.length > 0 ? "flex" : "none"}
+              >
+                <Text fontSize="25px"> Buy slots </Text>
+                     {selectedNumbers.length > 0 &&
+                  selectedNumbers.map((number, index) => {
+                    console.log("mapping the array");
+                    return (
+                        <Text key={index} fontSize={"25px"} color={"white"}>
+                        {" "}
+                        {number},
+                      </Text>
+                    );
+                  })}
+
+              </HStack>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Are you absolutely sure?</DialogTitle>
+      <DialogDescription>
+        This action cannot be undone. This will permanently delete your account
+        and remove your data from our servers.
+      </DialogDescription>
+    </DialogHeader>
+  </DialogContent>
+</Dialog>
+
+          </>
+  )
+}
 
