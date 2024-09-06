@@ -6,6 +6,8 @@ import './index.css'
 import Friends from "./pages/Friends";
 import '@fontsource/inter'
 import History from "./pages/History";
+import Connect from "./pages/connect";
+import Wallet from "./pages/Wallet";
 
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
             <Route index element={<Gameplay />} />
             <Route path="history" element={<History />} />
             <Route path="friends" element={<Friends />} />
+            <Route path="wallet" element={<Wallet />} />
+            <Route path="connect" element={<Connect />} />
 
           </Routes>
         </BrowserRouter>

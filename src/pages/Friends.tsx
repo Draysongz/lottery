@@ -122,16 +122,16 @@ export default function Friends() {
           })}
         </Flex>
       </Box>
-
-      {/* <Box
-        className="fixed bottom-0 left-0 w-full h-16 pointer-events-none"
-        style={{
-          background: "transparent",
-          backdropFilter: "blur(10px)",
-          zIndex: 1,
-        }}
-      ></Box> */}
-      <Button width={'90%'} height={'70px'}>
+      <Button
+      w={'90%'}
+      bgColor={'white'}
+      h={'75px'}
+      borderRadius={'10px'}
+      color={'black'}
+      fontSize={'22px'}
+      fontWeight={'500'}
+      position={'fixed'}
+      bottom={20}>
         Invite a Friend
       </Button>
       <NavigationBar />
