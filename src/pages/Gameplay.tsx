@@ -14,7 +14,7 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
+  // ModalCloseButton,
 } from "@chakra-ui/react";
 import { User } from "../helper-functions/getUser";
 import {
@@ -53,7 +53,7 @@ const gameplayArray = [
   {
     location: "New Mexico",
     prize: "25k",
-    userIcon: "/svgIcons/people.svg",
+    userIcon: "/svgIcons/peeps.svg",
     playersNumber: "9845",
     ticketIcon: "/svgIcons/ticket.svg",
     ticketRequired: "10",
@@ -64,7 +64,7 @@ const gameplayArray = [
   {
     location: "Nevada",
     prize: "10k",
-    userIcon: "/svgIcons/people.svg",
+    userIcon: "/svgIcons/peeps.svg",
     playersNumber: "1246",
     ticketIcon: "/svgIcons/ticket.svg",
     ticketRequired: "10",
@@ -75,7 +75,7 @@ const gameplayArray = [
   {
     location: "Nevada",
     prize: "10k",
-    userIcon: "/svgIcons/people.svg",
+    userIcon: "/svgIcons/peeps.svg",
     playersNumber: "1246",
     ticketIcon: "/svgIcons/ticket.svg",
     ticketRequired: "10",
@@ -222,7 +222,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                     display={"flex"}
                     justifyContent={"center"}
                     alignItems={"center"}
-                    border={"2px solid limegreen"}
+                    border={"2px solid grey"}
                   >
                     <Box
                       bgColor={"transparent"}
@@ -242,8 +242,8 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                         flexDirection={"column"}
                         alignItems={"center"}
                         sx={{
-                          WebkitTextStroke: "2px limegreen", // Custom stroke
-                          textStroke: "2px limegreen",
+                          WebkitTextStroke: "2px grey", // Custom stroke
+                          textStroke: "2px grey",
                         }}
                       >
                         {gameplay.prize}
@@ -315,7 +315,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
               </Flex>
               <Button
                 onClick={() => handleJoinGame(gameplay.prize)} // Pass the prize to the drawer
-                bg={"linear-gradient(180deg, limegreen 0%, grey 100%)"}
+                bg={"linear-gradient(180deg, grey 0%, grey 100%)"}
                 color={"white"}
                 width={"60%"}
                 height={"40px"}
@@ -334,7 +334,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
         <DrawerContent
           borderTopRadius="25px"
           bg={"black"}
-          borderTop={"2px solid limegreen"}
+          borderTop={"4px solid grey"}
         >
           <DrawerBody>
             <div className=" flex flex-col items-center justify-center py-10 text-white gap-3">
@@ -345,8 +345,8 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                     fontWeight={100}
                     fontSize={"2em"}
                     sx={{
-                      WebkitTextStroke: "2px limegreen", // Custom stroke
-                      textStroke: "2px limegreen",
+                      WebkitTextStroke: "2px grey", // Custom stroke
+                      textStroke: "2px grey",
                     }}
                   >
                     {selectedPrize}
@@ -361,12 +361,12 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                       className={`dialpad-button ${
                         disabledNumbers.has(number)
                           ? "pattern-button"
-                          : "bg-[limegreen]"
+                          : "bg-[grey]"
                       } text-white`}
                       w={"80px"}
                       height={"80px"}
                       fontSize={"28px"}
-                      border={"1px solid limegreen"}
+                      border={"1px solid grey"}
                       borderRadius={"50px"}
                     >
                       {number}
