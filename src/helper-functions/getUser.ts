@@ -107,10 +107,16 @@ async function updateUserData(userId: number, updates: {}) {
 
 async function createUser(userId: number, name: string) {
   const docRef = await addDoc(collection(db, "users"), {
-    name,
-    referrals: [],
-    userId: userId,
-    referralLink: null,
+  name,
+  referrals: [],
+  userId: userId,
+  referralLink: null,
+  gamesPlayed: [], // Array of games the user has played
+  gamesWon: 0,
+  walletAddress: null,
+  gamesLost: 0,
+  freeTickets: 0,
+  currentGames: []
   })
   console.log("Document written with ID: ", docRef.id)
 }

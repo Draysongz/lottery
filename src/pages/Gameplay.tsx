@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Flex,
@@ -16,6 +16,7 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
+import { User } from "../helper-functions/getUser";
 import {
   Drawer,
   DrawerBody,
@@ -40,7 +41,7 @@ interface GameplayItem {
   cta: string;
 }
 
-const gameplayArray: GameplayItem[] = [
+const gameplayArray = [
   {
     location: "New Mexico",
     prize: "25k",
@@ -76,7 +77,10 @@ const gameplayArray: GameplayItem[] = [
   },
 ];
 
-const Gameplay: React.FC = () => {
+export default function Gameplay({userData} : {userData: User | undefined}) {
+
+  console.log(userData)
+
   const { onClose, onOpen, isOpen } = useDisclosure();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
@@ -115,7 +119,6 @@ const Gameplay: React.FC = () => {
   };
 
   const dialpadNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-
   return (
     <Box
       display={"flex"}
@@ -319,9 +322,7 @@ const Gameplay: React.FC = () => {
           );
         })}
       </Box>
-
-      <NavigationBar />
-
+      <NavigationBar userData={userData} />
       <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent
@@ -383,7 +384,7 @@ const Gameplay: React.FC = () => {
                   selectedNumbers.map((number, index) => {
                     console.log("mapping the array");
                     return (
-                      <Text fontSize={"25px"} color={"white"}>
+                      <Text key={index} fontSize={"25px"} color={"white"}>
                         {" "}
                         {number},
                       </Text>
@@ -439,4 +440,4 @@ const Gameplay: React.FC = () => {
   );
 };
 
-export default Gameplay;
+

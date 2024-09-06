@@ -10,7 +10,7 @@ import {
   where,
 } from "firebase/firestore"
 import { app } from "../firebase/firebase"
-import { getUserLevelData, User } from "./getUser"
+import { getUserLevelData } from "./getUser"
 
 const db = getFirestore(app)
 
@@ -53,9 +53,9 @@ async function checkCardExist(gameId: string) {
 
 
 async function getCardsByCategory(category: string) {
-  const docQ = query(section, where("category", "==", category));
+  const docQ = query(section, where("status", "==", category));
   const qs = await getDocs(docQ);
-  return qs.docs.map(doc => ({ id: doc.id, ...doc.data() })); // Return documents with IDs
+  return qs; // Return documents with IDs
 }
 
 
@@ -73,9 +73,9 @@ async function getCard(userId: number, documentId: string) {
 }
 
 
-async function updateGameSlots(gameId: number, purchasedSlots: number[]) {
+async function updateGameSlots(gameId: string, purchasedSlots: number[]) {
   try {
-    const gameDocRef = doc(db, "games", gameId.toString());
+    const gameDocRef = doc(db, "games", gameId);
     await updateDoc(gameDocRef, {
       availableSlots: arrayRemove(...purchasedSlots) // Remove purchased slots from available slots
     });

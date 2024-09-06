@@ -6,12 +6,21 @@ import './index.css'
 import Friends from "./pages/Friends";
 import '@fontsource/inter'
 import History from "./pages/History";
-import Connect from "./pages/connect";
+import Connect from "./pages/Connect";
 import Wallet from "./pages/Wallet";
+import Admin from "./Admin/Admin";
+import { useRealtimeUserData } from "./hooks/useUserData";
+
+
+
 
 
 function App() {
   // const BackButton = WebApp.BackButton;
+  const name ="Habibilord"
+  const userId = 214356
+
+  const {userData} = useRealtimeUserData(userId, name)
 
   // BackButton.show();
   // BackButton.onClick(() => window.history.back());
@@ -27,11 +36,12 @@ function App() {
       <Box zIndex={0}>
         <BrowserRouter>
           <Routes>
-            <Route index element={<Gameplay />} />
+            <Route index element={<Gameplay userData={userData} />}  />
             <Route path="history" element={<History />} />
             <Route path="friends" element={<Friends />} />
             <Route path="wallet" element={<Wallet />} />
             <Route path="connect" element={<Connect />} />
+            <Route path="admin" element={<Admin />} />
 
           </Routes>
         </BrowserRouter>
