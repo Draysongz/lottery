@@ -401,22 +401,24 @@ function ModalComponent({selectedNumbers}: {selectedNumbers: number[]}){
   <DialogTrigger>
       <HStack
                 color={"white"}
-                w={"90%"}
+                w={"90vw"}
                 bg={"transparent"}
                 rounded={"full"}
-                p={10}
+                py={10}
+                px={3}
                 mt={5}
                 height="70px"
+                alignItems={'center'}
+                justifyContent={'center'}
                 border={'1px solid white'}
-                justifyContent={"space-between"}
                 display={selectedNumbers.length > 0 ? "flex" : "none"}
               >
-                <Text fontSize="25px"> Buy slots </Text>
+                <Text fontSize="20px"> Buy slots </Text>
                      {selectedNumbers.length > 0 &&
                   selectedNumbers.map((number, index) => {
                     console.log("mapping the array");
                     return (
-                        <Text key={index} fontSize={"25px"} color={"white"}>
+                        <Text key={index} fontSize={"20px"} color={"white"}>
                         {" "}
                         {number},
                       </Text>
