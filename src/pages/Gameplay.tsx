@@ -8,13 +8,6 @@ import {
   Icon,
   useDisclosure,
   HStack,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  // ModalCloseButton,
 } from "@chakra-ui/react";
 import { User } from "../helper-functions/getUser";
 import {
@@ -37,17 +30,17 @@ import {
 
 
 // Define the type for each gameplay item
-interface GameplayItem {
-  location: string;
-  prize: string;
-  userIcon: string;
-  playersNumber: string;
-  ticketIcon: string;
-  ticketRequired: string;
-  chips: string;
-  bidAmount: string;
-  cta: string;
-}
+// interface GameplayItem {
+//   location: string;
+//   prize: string;
+//   userIcon: string;
+//   playersNumber: string;
+//   ticketIcon: string;
+//   ticketRequired: string;
+//   chips: string;
+//   bidAmount: string;
+//   cta: string;
+// }
 
 const gameplayArray = [
   {
