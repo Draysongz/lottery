@@ -172,7 +172,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
               flexDirection={"column"}
               alignItems={"center"}
               gap={1}
-              boxShadow="0px 0px 4px 6px rgba(223, 223, 223, 0.6)"
+              boxShadow="0px 0px 4px 1px rgba(223, 223, 223, 0.6)"
             >
               <Flex
                 bgColor={"black"}
@@ -183,7 +183,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                 alignItems={"center"}
                 justifyContent={"center"}
                 zIndex={0}
-                boxShadow="0px 0px 4px 6px rgba(223, 223, 223, 0.6)"
+                boxShadow="0px 0px 14px 2px rgba(223, 223, 223, 0.6)"
               >
                 <Text fontSize={"22px"} fontWeight={"600"} color={"white"}>
                   {gameplay.location}
@@ -256,7 +256,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                 mt={-16}
                 mb={3}
                 alignItems={"center"}
-                boxShadow="0px 0px 4px 6px rgba(223, 223, 223, 0.6)"
+                boxShadow="0px 0px 4px 1px rgba(223, 223, 223, 0.6)"
               >
                 <Flex
                   borderRight={"1px solid white"}
@@ -327,7 +327,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
         <DrawerContent
           borderTopRadius="25px"
           bg={"black"}
-          borderTop={"4px solid grey"}
+          borderTop={"4px solid white"}
         >
           <DrawerBody>
             <div className=" flex flex-col items-center justify-center py-10 text-white gap-3">
@@ -337,9 +337,10 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                   <Text
                     fontWeight={100}
                     fontSize={"2em"}
+                    color={'black'}
                     sx={{
-                      WebkitTextStroke: "2px grey", // Custom stroke
-                      textStroke: "2px grey",
+                      WebkitTextStroke: "2px white", // Custom stroke
+                      textStroke: "2px white",
                     }}
                   >
                     {selectedPrize}
@@ -354,8 +355,8 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                       className={`dialpad-button ${
                         disabledNumbers.has(number)
                           ? "pattern-button"
-                          : "bg-[grey]"
-                      } text-white`}
+                          : "bg-[white]"
+                      } text-black`}
                       w={"80px"}
                       height={"80px"}
                       fontSize={"28px"}
@@ -401,10 +402,12 @@ function ModalComponent({selectedNumbers}: {selectedNumbers: number[]}){
       <HStack
                 color={"white"}
                 w={"90%"}
-                bg={"green"}
+                bg={"transparent"}
                 rounded={"full"}
                 p={10}
+                mt={5}
                 height="70px"
+                border={'1px solid white'}
                 justifyContent={"space-between"}
                 display={selectedNumbers.length > 0 ? "flex" : "none"}
               >
@@ -422,14 +425,34 @@ function ModalComponent({selectedNumbers}: {selectedNumbers: number[]}){
 
               </HStack>
   </DialogTrigger>
-  <DialogContent>
+  <DialogContent className=" h-[50vh] items-center rounded-[10px] border-[2px] bg-black text-white">
     <DialogHeader>
-      <DialogTitle>Are you absolutely sure?</DialogTitle>
-      <DialogDescription>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
-      </DialogDescription>
+      <DialogTitle>You are about to purchase slot </DialogTitle>
     </DialogHeader>
+      <Box
+      display={'flex'}
+      gap={2}
+      textAlign={'center'}
+      alignItems={'center'}
+      justifyContent={'center'}
+      >
+      {selectedNumbers.length > 0 &&
+                  selectedNumbers.map((number, index) => {
+                    console.log("mapping the array");
+                    return (
+                        <Text key={index} fontSize={"25px"}>
+                        {" "}
+                        {number},
+                      </Text>
+                    );
+                  })}
+      </Box>
+      <Button
+      border={'2px solid white'}
+      h={'60px'}
+      borderRadius={'10px'}>
+        Buy 
+      </Button>
   </DialogContent>
 </Dialog>
 
