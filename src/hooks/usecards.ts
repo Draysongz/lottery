@@ -6,24 +6,33 @@ import {
   updateGameSlots,
   resetGame,
   Game,
+  getAllGames
 } from "../helper-functions/cards";
 
-export function useCards(category: string, userId: number | undefined) {
+export function useCards(category?: string | undefined) {
   const [cards, setCards] = useState<DocumentData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchCards() {
-      if (!userId) return;
+     
       setIsLoading(true);
       try {
-        const cardQs = await getCardsByCategory(category);
+         let fetchedCards
+         if(category){
+              const cardQs = await getCardsByCategory(category);
 
         // Process and set the cards in the state
-        const fetchedCards = cardQs.docs.map((card: any) => ({
+         fetchedCards = cardQs.docs.map((card: any) => ({
           ...card.data(),
           id: card.id,
         }));
+         }else {
+          // Fetch all cards if no category is provided
+          const cardQs = await getAllGames(); // Call the new function here
+          fetchedCards = cardQs
+        }
+    
 
         setCards(fetchedCards);
       } catch (err) {
@@ -34,7 +43,7 @@ export function useCards(category: string, userId: number | undefined) {
     }
 
     fetchCards();
-  }, [category, userId]);
+  }, [category]);
 
   const addGame = async (data: Game) => {
     try {

@@ -94,5 +94,40 @@ async function resetGame(gameId: string, data: Game) {
   });
 }
 
+async function getAllGames() {
+  try {
+    const querySnapshot = await getDocs(section); // Fetch all documents from the "Games" collection
+    const gamesList = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
 
-export { createCards, getCardsByCategory, getCard, updateGameSlots, resetGame }
+      // Ensure all required fields are present in the document data
+      const game: Game = {
+        gameId: data.gameId,
+        participants: data.participants || [],
+        totalSlots: data.totalSlots,
+        prizePool: data.prizePool,
+        status: data.status,
+        winner: data.winner || null,
+        ticketPrice: data.ticketPrice,
+        availableSlots: data.availableSlots || [],
+        createdAt: data.createdAt?.toDate() || new Date(),
+        drawnAt: data.drawnAt?.toDate() || null,
+      };
+
+      return {
+        id: doc.id, // Include the document ID
+        ...game, // Spread the game data
+      };
+    });
+
+    return gamesList;
+  } catch (error) {
+    console.error("Error fetching games:", error);
+    return [];
+  }
+}
+
+
+
+
+export { createCards, getCardsByCategory, getCard, updateGameSlots, resetGame, getAllGames }

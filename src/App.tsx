@@ -41,7 +41,7 @@ function App() {
             <Route path="friends" element={<Friends />} />
             <Route path="wallet" element={<Wallet />} />
             <Route path="connect" element={<Connect />} />
-            <Route path="admin" element={<Admin />} />
+            <Route path="admin" element={<Admin userData={userData} />} />
 
           </Routes>
         </BrowserRouter>
