@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -8,8 +8,10 @@ import {
   Icon,
   useDisclosure,
   HStack,
+  useToast,
 } from "@chakra-ui/react";
-import { User } from "../helper-functions/getUser";
+import {  User } from "../helper-functions/getUser";
+import { Game } from "../helper-functions/cards";
 import {
   Drawer,
   DrawerBody,
@@ -22,105 +24,85 @@ import NavigationBar from "../components/NavigationBar";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "../components/ui/dialog"
+import { useCards } from "../hooks/usecards";
+import peeps from '../Assets/peeps.svg'
+import ticket from '../Assets/ticket.svg'
+import chips from  '../Assets/chip.svg'
+import { useRealtimeUserData } from "../hooks/useUserData";
 
 
-// Define the type for each gameplay item
-// interface GameplayItem {
-//   location: string;
-//   prize: string;
-//   userIcon: string;
-//   playersNumber: string;
-//   ticketIcon: string;
-//   ticketRequired: string;
-//   chips: string;
-//   bidAmount: string;
-//   cta: string;
-// }
 
-const gameplayArray = [
-  {
-    location: "New Mexico",
-    prize: "25k",
-    userIcon: "/svgIcons/peeps.svg",
-    playersNumber: "9845",
-    ticketIcon: "/svgIcons/ticket.svg",
-    ticketRequired: "10",
-    chips: "/svgIcons/chip.svg",
-    bidAmount: "25,000",
-    cta: "Join the game",
-  },
-  {
-    location: "Nevada",
-    prize: "10k",
-    userIcon: "/svgIcons/peeps.svg",
-    playersNumber: "1246",
-    ticketIcon: "/svgIcons/ticket.svg",
-    ticketRequired: "10",
-    chips: "/svgIcons/chip.svg",
-    bidAmount: "25,000",
-    cta: "Join the game",
-  },
-  {
-    location: "Nevada",
-    prize: "10k",
-    userIcon: "/svgIcons/peeps.svg",
-    playersNumber: "1246",
-    ticketIcon: "/svgIcons/ticket.svg",
-    ticketRequired: "10",
-    chips: "/svgIcons/chip.svg",
-    bidAmount: "25,000",
-    cta: "Join the game",
-  },
-];
 
 export default function Gameplay({userData} : {userData: User | undefined}) {
 
   console.log(userData)
 
   const { onClose, onOpen, isOpen } = useDisclosure();
+  const {cards} = useCards('active')
+
 
   
   const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
 
   // Add state to hold the selected prize
-  const [selectedPrize, setSelectedPrize] = useState<string>("");
-  const [displayNumbers, setDisplayNumbers] = useState<string[]>([]);
-  const [disabledNumbers, setDisabledNumbers] = useState<Set<string>>(
+  const [selectedPrize, setSelectedPrize] = useState<number>(0);
+  const [disabledNumbers, setDisabledNumbers] = useState<Set<number>>(
     new Set()
   );
+  const [selectedCard, setSelectedCard] = useState<Game>()
+
+
+  let allSlots;
+  if(selectedCard != null){
+   allSlots = Array.from({ length: selectedCard.totalSlots }, (_, index) => index + 1);
+  }
+
+    useEffect(() => {
+    if (cards && cards.length > 0) {
+      // Calculate unavailable slots based on availableSlots field
+      const unavailableNumbers = new Set<number>();
+      cards.forEach(card => {
+        if (card.availableSlots) {
+          for (let i = 1; i <= 10; i++) { // Assuming there are slots 1 to 10
+            if (!card.availableSlots.includes(i)) {
+              unavailableNumbers.add(i);
+            }
+          }
+        }
+      });
+      setDisabledNumbers(unavailableNumbers);
+    }
+  }, [cards]);
 
   // Function to handle clicking on a game
-  const handleJoinGame = (prize: string) => {
+  const handleJoinGame = (prize: number, card: Game) => {
     setSelectedPrize(prize); // Set the selected prize
+    setSelectedCard(card)
+
     onOpen(); // Open the drawer
   };
 
-  const handleNumberClick = (number: string) => {
+  const handleNumberClick = (number: number) => {
     if (
       !disabledNumbers.has(number) &&
-      !selectedNumbers.includes(parseInt(number))
+      !selectedNumbers.includes(number)
     ) {
       console.log(selectedNumbers);
 
       // setDisplayNumbers([...displayNumbers, number]);
       setDisabledNumbers(new Set(disabledNumbers.add(number)));
-      setSelectedNumbers((prev) => [...prev, parseInt(number)]);
+      setSelectedNumbers((prev) => [...prev, number]);
       console.log(selectedNumbers);
     }
   };
 
-  const handleClearNumber = (number: string) => {
-    setDisplayNumbers(displayNumbers.filter((num) => num !== number));
-    disabledNumbers.delete(number);
-    setDisabledNumbers(new Set(disabledNumbers));
-  };
 
-  const dialpadNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+
+ 
   return (
     <Flex
       
@@ -161,7 +143,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
         gap={16}
         alignItems={"center"}
       >
-        {gameplayArray.map((gameplay, index) => {
+        {cards && cards?.length > 0 && cards.map((card, index) => {
           return (
             <Flex
               key={index}
@@ -186,7 +168,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                 boxShadow="0px 0px 14px 2px rgba(223, 223, 223, 0.6)"
               >
                 <Text fontSize={"22px"} fontWeight={"600"} color={"white"}>
-                  {gameplay.location}
+                  {card.gameId}
                 </Text>
               </Flex>
               <Flex
@@ -239,9 +221,9 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                           textStroke: "2px grey",
                         }}
                       >
-                        {gameplay.prize}
+                        {card.prizePool}
                         <Text fontSize={"20px"} lineHeight={"0"}>
-                          XFI
+                          USDT
                         </Text>
                       </Text>
                     </Box>
@@ -266,9 +248,9 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                   alignItems={"center"}
                   flexDirection={"column"}
                 >
-                  <Image width={8} src={gameplay.userIcon} />
+                  <Image width={8} src={peeps} />
                   <Text color={"white"} fontWeight={600}>
-                    {gameplay.playersNumber}
+                    {card.participants.length}
                   </Text>
                 </Flex>
                 <Flex
@@ -279,7 +261,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                   alignItems={"center"}
                   flexDirection={"column"}
                 >
-                  <Image width={8} src={gameplay.ticketIcon} />
+                  <Image width={8} src={ticket} />
                   <Text
                     color={"white"}
                     fontWeight={600}
@@ -287,9 +269,9 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                     alignItems={"center"}
                     gap={1}
                   >
-                    {gameplay.ticketRequired}
+                    {card.ticketPrice}
                     <Text fontWeight={100} fontSize={"10px"}>
-                      XFI
+                      USDT
                     </Text>
                   </Text>
                 </Flex>
@@ -300,14 +282,14 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                   alignItems={"center"}
                   flexDirection={"column"}
                 >
-                  <Image width={8} src={gameplay.chips} />
+                  <Image width={8} src={chips} />
                   <Text color={"white"} fontWeight={600}>
-                    {gameplay.bidAmount}
+                    {card.prizePool}
                   </Text>
                 </Flex>
               </Flex>
               <Button
-                onClick={() => handleJoinGame(gameplay.prize)} // Pass the prize to the drawer
+                onClick={() => handleJoinGame(card.prizePool, card as Game)} // Pass the prize to the drawer
                 bg={"linear-gradient(180deg, grey 0%, grey 100%)"}
                 color={"white"}
                 width={"60%"}
@@ -315,7 +297,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                 borderRadius={"50px"}
                 boxShadow="0px 4px 6px rgba(0, 0, 0, 0.6)"
               >
-                {gameplay.cta}
+                Join game
               </Button>
             </Flex>
           );
@@ -343,11 +325,11 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                       textStroke: "2px white",
                     }}
                   >
-                    {selectedPrize}
+                    {selectedPrize} USDT
                   </Text>
                 </p>
                 <div className="input flex flex-wrap justify-center gap-2 mt-4 w-['80%]">
-                  {dialpadNumbers.map((number) => (
+                  {allSlots && allSlots?.length > 0 && allSlots.map((number) => (
                     <Button
                       key={number}
                       onClick={() => handleNumberClick(number)}
@@ -368,7 +350,7 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
                   ))}
                 </div>
               </div>
-               <ModalComponent  selectedNumbers={selectedNumbers}/>
+               <ModalComponent  selectedNumbers={selectedNumbers} userData={userData} card={selectedCard as Game} />
             </div>
           </DrawerBody>
 
@@ -394,10 +376,30 @@ export default function Gameplay({userData} : {userData: User | undefined}) {
 
 
 
-function ModalComponent({selectedNumbers}: {selectedNumbers: number[]}){
+function ModalComponent({selectedNumbers,  userData, card}: {selectedNumbers: number[], userData: User | undefined, card: Game}){
+    const {updateGameData} = useRealtimeUserData(userData?.userId, userData?.name)
+    const {updateSlots} = useCards("active")
+    const toast= useToast()
+    const [open, setOpen] = useState(false)
+
+    const purchaseSlots = async ()=>{
+      try {
+        await updateGameData(card.gameId, selectedNumbers, card.prizePool)
+        await updateSlots(card.gameId, selectedNumbers, userData)
+        toast({
+          title: 'Slots purchased sucessfully',
+          duration:3000,
+          isClosable: true
+        })
+        
+        setOpen(false)
+      } catch (error) {
+        console.log(error)
+      }
+    }
   return(
     <>
-     <Dialog>
+     <Dialog open={open} onOpenChange={setOpen}>
   <DialogTrigger>
       <HStack
                 color={"white"}
@@ -452,10 +454,12 @@ function ModalComponent({selectedNumbers}: {selectedNumbers: number[]}){
       <Button
       border={'2px solid white'}
       h={'60px'}
-      borderRadius={'10px'}>
+      borderRadius={'10px'}
+      onClick={purchaseSlots}>
         Buy 
       </Button>
   </DialogContent>
+  
 </Dialog>
 
           </>

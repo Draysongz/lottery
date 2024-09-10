@@ -10,7 +10,7 @@ import {
   where,
 } from "firebase/firestore"
 import { app } from "../firebase/firebase"
-import { getUserLevelData } from "./getUser"
+import { getUserLevelData, User } from "./getUser"
 
 const db = getFirestore(app)
 
@@ -73,16 +73,34 @@ async function getCard(userId: number, documentId: string) {
 }
 
 
-async function updateGameSlots(gameId: string, purchasedSlots: number[]) {
+async function updateGameSlots(gameId: string, purchasedSlots: number[], user: User | undefined) {
   try {
-    const gameDocRef = doc(db, "games", gameId);
-    await updateDoc(gameDocRef, {
-      availableSlots: arrayRemove(...purchasedSlots) // Remove purchased slots from available slots
-    });
+    const gamesCollectionRef = collection(db, "Games");
+    
+    // Query the games collection for the document where gameId matches
+    const gameQuery = query(gamesCollectionRef, where("gameId", "==", gameId));
+    const querySnapshot = await getDocs(gameQuery);
+    
+    // Ensure the game exists
+    if (!querySnapshot.empty) {
+      const gameDoc = querySnapshot.docs[0]; // Assuming there's only one game with this ID
+      
+      // Update the game by removing purchased slots from available slots
+      const gameDocRef = doc(db, "Games", gameDoc.id);
+      await updateDoc(gameDocRef, {
+        availableSlots: arrayRemove(...purchasedSlots),
+        participants: {userId: user?.userId, slotsPurchased: purchasedSlots} // Remove purchased slots from available slots
+      });
+      console.log("Slots updated successfully.");
+    } else {
+      console.log(`No game found with gameId: ${gameId}`);
+    }
   } catch (err) {
     console.error("Error updating game slots:", err);
   }
 }
+
+
 async function resetGame(gameId: string, data: Game) {
   const gameDocRef = doc(db, "Games", gameId);
   await updateDoc(gameDocRef, {

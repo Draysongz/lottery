@@ -2,8 +2,9 @@ import { Box, Flex, Text, Image, Button } from "@chakra-ui/react";
 import "../index.css";
 import "@fontsource/inter";
 import NavigationBar from "../components/NavigationBar";
+import { User } from "../helper-functions/getUser";
 
-export default function Connect() {
+export default function Connect({userData}: {userData: User}) {
   return (
     <Box
       display={"flex"}
@@ -52,7 +53,7 @@ export default function Connect() {
       >
         Connect Wallet
       </Button>
-      <NavigationBar />
+      <NavigationBar userData={userData} />
     </Box>
   );
 }

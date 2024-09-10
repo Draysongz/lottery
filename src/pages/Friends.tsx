@@ -4,6 +4,7 @@ import { FaSackDollar } from "react-icons/fa6";
 // import Header from "../components/Header";
 import '@fontsource/inter'
 import NavigationBar from "../components/NavigationBar";
+import { User } from "../helper-functions/getUser";
 
 const activeList = [
   {
@@ -23,7 +24,7 @@ const activeList = [
 ];
 
 
-export default function Friends() {
+export default function Friends({userData}: {userData: User}) {
   return (
     <Box
       display={"flex"}
@@ -134,7 +135,7 @@ export default function Friends() {
       bottom={20}>
         Invite a Friend
       </Button>
-      <NavigationBar />
+      <NavigationBar userData={userData} />
     </Box>
   );
 }

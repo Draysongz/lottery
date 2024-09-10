@@ -10,7 +10,8 @@ import {
 } from "@chakra-ui/react";
 import "../index.css";
 import NavigationBar from "../components/NavigationBar";
-export default function History() {
+import { User } from "../helper-functions/getUser";
+export default function History({userData}: {userData: User}) {
   return (
     <Box
       display={"flex"}
@@ -103,7 +104,7 @@ export default function History() {
         </Table>
       </TableContainer>
 
-      <NavigationBar />
+      <NavigationBar userData={userData} />
     </Box>
   );
 }

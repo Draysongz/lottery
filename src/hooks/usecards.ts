@@ -8,6 +8,7 @@ import {
   Game,
   getAllGames
 } from "../helper-functions/cards";
+import { User } from "../helper-functions/getUser";
 
 export function useCards(category?: string | undefined) {
   const [cards, setCards] = useState<DocumentData[]>([]);
@@ -55,9 +56,9 @@ export function useCards(category?: string | undefined) {
     }
   };
 
-  const updateSlots = async (gameId: string, purchasedSlots: number[]) => {
+  const updateSlots = async (gameId: string, purchasedSlots: number[], user: User | undefined) => {
     try {
-      await updateGameSlots(gameId, purchasedSlots);
+      await updateGameSlots(gameId, purchasedSlots, user);
       // Optionally, refetch or update the game locally
       setCards((prev) =>
         prev.map((card) =>

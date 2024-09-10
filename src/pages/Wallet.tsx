@@ -1,12 +1,12 @@
-import { Box, Flex, Text, Image, Icon, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Image, Icon} from "@chakra-ui/react";
 import "../index.css";
-import { FaSackDollar } from "react-icons/fa6";
 import { FaChevronRight, FaRegCheckCircle } from "react-icons/fa";
 import { FaCheckCircle, FaCircle } from 'react-icons/fa';
 import "@fontsource/inter";
 import NavigationBar from "../components/NavigationBar";
+import { User } from "../helper-functions/getUser";
 
-export default function Wallet() {
+export default function Wallet({userData}: {userData: User}) {
   return (
     <Box
       display={"flex"}
@@ -94,7 +94,7 @@ export default function Wallet() {
     </Flex>
 
 
-      <NavigationBar />
+      <NavigationBar userData={userData}  />
     </Box>
   );
 }

@@ -30,7 +30,7 @@ export type User = {
 };
 
 export type Game = {
-  gameId: number;
+  gameId: string;
   slotsPurchased: number[];
   winningStatus: boolean;
   prizeAmount: number;
@@ -138,15 +138,25 @@ async function updateReferralData(userId: number, referralId: number) {
   }
 }
 
-async function updateUserGameData(userId: number, gameId: string, slotsPurchased: number[]) {
+async function updateUserGameData(userId: number, gameId: string, slotsPurchased: number[], prizePool: number) {
   try {
-    const userDocRef = doc(db, "users", userId.toString());
-    await updateDoc(userDocRef, {
+    const usersCollectionRef = collection(db, "users");
+
+     const userQuery = query(usersCollectionRef, where("userId", "==", userId));
+    const querySnapshot = await getDocs(userQuery);
+    
+
+      if (!querySnapshot.empty) {
+      const userDoc = querySnapshot.docs[0]; // Assuming there's only one game with this ID
+      
+      // Update the game by removing purchased slots from available slots
+      const userDocRef = doc(db, "users", userDoc.id);
+      await updateDoc(userDocRef, {
       currentGames: arrayUnion({
         gameId,
         slotsPurchased,
         winningStatus: false,
-        prizeAmount: 0,
+        prizeAmount: prizePool,
         status: 'in-progress'
       }),
       gamesPlayed: arrayUnion({
@@ -157,6 +167,10 @@ async function updateUserGameData(userId: number, gameId: string, slotsPurchased
         status: 'in-progress'
       })
     });
+      console.log("Slots updated successfully.");
+    } else {
+      console.log(`No game found with userId: ${userId}`);
+    }
   } catch (err) {
     console.error("Error updating user game data:", err);
   }
