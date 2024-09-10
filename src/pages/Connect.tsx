@@ -4,7 +4,7 @@ import "@fontsource/inter";
 import NavigationBar from "../components/NavigationBar";
 import { User } from "../helper-functions/getUser";
 
-export default function Connect({userData}: {userData: User}) {
+export default function Connect({userData}: {userData: User | undefined}) {
   return (
     <Box
       display={"flex"}

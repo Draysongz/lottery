@@ -11,7 +11,7 @@ import {
 import "../index.css";
 import NavigationBar from "../components/NavigationBar";
 import { User } from "../helper-functions/getUser";
-export default function History({userData}: {userData: User}) {
+export default function History({userData}: {userData: User | undefined} ) {
   return (
     <Box
       display={"flex"}

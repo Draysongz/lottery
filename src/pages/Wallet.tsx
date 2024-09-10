@@ -6,7 +6,7 @@ import "@fontsource/inter";
 import NavigationBar from "../components/NavigationBar";
 import { User } from "../helper-functions/getUser";
 
-export default function Wallet({userData}: {userData: User}) {
+export default function Wallet({userData}: {userData: User | undefined}) {
   return (
     <Box
       display={"flex"}

@@ -37,10 +37,10 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route index element={<Gameplay userData={userData} />}  />
-            <Route path="history" element={<History />} />
-            <Route path="friends" element={<Friends />} />
-            <Route path="wallet" element={<Wallet />} />
-            <Route path="connect" element={<Connect />} />
+            <Route path="history" element={<History userData={userData}  />} />
+            <Route path="friends" element={<Friends userData={userData}  />} />
+            <Route path="wallet" element={<Wallet userData={userData}  />} />
+            <Route path="connect" element={<Connect userData={userData}  />} />
             <Route path="admin" element={<Admin userData={userData} />} />
 
           </Routes>

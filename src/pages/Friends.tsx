@@ -24,7 +24,7 @@ const activeList = [
 ];
 
 
-export default function Friends({userData}: {userData: User}) {
+export default function Friends({userData}: {userData: User | undefined}) {
   return (
     <Box
       display={"flex"}
